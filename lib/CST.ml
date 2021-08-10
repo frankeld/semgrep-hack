@@ -17,39 +17,21 @@ type heredoc_end_newline = Token.t
 type heredoc_body = Token.t
 [@@deriving sexp_of]
 
-type type_modifier = [
-    `AT of Token.t (* "@" *)
-  | `QMARK of Token.t (* "?" *)
-  | `TILDE of Token.t (* "~" *)
-]
+type semgrep_identifier = Token.t (* pattern \$[A-Z_][A-Z_0-9]* *)
 [@@deriving sexp_of]
 
-type use_type = [
-    `Name of Token.t (* "namespace" *)
-  | `Func of Token.t (* "function" *)
-  | `Type of Token.t (* "type" *)
-  | `Const of Token.t (* "const" *)
-]
-[@@deriving sexp_of]
-
-type xhp_string = Token.t
-[@@deriving sexp_of]
-
-type visibility_modifier = [
-    `Public of Token.t (* "public" *)
-  | `Prot of Token.t (* "protected" *)
-  | `Priv of Token.t (* "private" *)
-]
+type variable = Token.t
 [@@deriving sexp_of]
 
 type pat_466b599 = Token.t (* pattern function\s*\( *)
 [@@deriving sexp_of]
 
-type xhp_comment = Token.t
-[@@deriving sexp_of]
-
 type xhp_class_identifier =
   Token.t (* pattern :[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+[@@deriving sexp_of]
+
+type xhp_category_identifier =
+  Token.t (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
 [@@deriving sexp_of]
 
 type false_ = [
@@ -62,15 +44,32 @@ type false_ = [
 type pat_b6fe07e = Token.t (* pattern <\?[hH][hH] *)
 [@@deriving sexp_of]
 
-type xhp_category_identifier =
-  Token.t (* pattern %[a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+type xhp_string = Token.t
+[@@deriving sexp_of]
+
+type true_ = [
+    `True_b326b50 of Token.t (* "true" *)
+  | `True_f827cf4 of Token.t (* "True" *)
+  | `TRUE of Token.t (* "TRUE" *)
+]
 [@@deriving sexp_of]
 
 type identifier =
   Token.t (* pattern [a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]* *)
 [@@deriving sexp_of]
 
-type variable = Token.t
+type tok_lcurldollar_pat_0e8e4b6 = Token.t
+[@@deriving sexp_of]
+
+type use_type = [
+    `Name of Token.t (* "namespace" *)
+  | `Func of Token.t (* "function" *)
+  | `Type of Token.t (* "type" *)
+  | `Const of Token.t (* "const" *)
+]
+[@@deriving sexp_of]
+
+type string_ = Token.t
 [@@deriving sexp_of]
 
 type float_ = Token.t
@@ -82,14 +81,20 @@ type integer = Token.t
 type heredoc_start_newline = Token.t
 [@@deriving sexp_of]
 
-type xhp_identifier =
-  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
+type xhp_comment = Token.t
 [@@deriving sexp_of]
 
 type scope_identifier = [
     `Self of Token.t (* "self" *)
   | `Parent of Token.t (* "parent" *)
   | `Static of Token.t (* "static" *)
+]
+[@@deriving sexp_of]
+
+type visibility_modifier = [
+    `Public of Token.t (* "public" *)
+  | `Prot of Token.t (* "protected" *)
+  | `Priv of Token.t (* "private" *)
 ]
 [@@deriving sexp_of]
 
@@ -103,13 +108,14 @@ type collection_type = [
 ]
 [@@deriving sexp_of]
 
-type string_ = Token.t
+type xhp_identifier =
+  Token.t (* pattern [a-zA-Z_][a-zA-Z0-9_]*([-:][a-zA-Z0-9_]+)* *)
 [@@deriving sexp_of]
 
-type true_ = [
-    `True_b326b50 of Token.t (* "true" *)
-  | `True_f827cf4 of Token.t (* "True" *)
-  | `TRUE of Token.t (* "TRUE" *)
+type type_modifier = [
+    `AT of Token.t (* "@" *)
+  | `QMARK of Token.t (* "?" *)
+  | `TILDE of Token.t (* "~" *)
 ]
 [@@deriving sexp_of]
 
@@ -118,9 +124,6 @@ type null = [
   | `Null_bbb93ef of Token.t (* "Null" *)
   | `NULL of Token.t (* "NULL" *)
 ]
-[@@deriving sexp_of]
-
-type tok_lcurldollar_pat_0e8e4b6 = Token.t
 [@@deriving sexp_of]
 
 type anon_choice_QMARKDASHGT_ce9cc19 = [
@@ -132,12 +135,6 @@ type anon_choice_QMARKDASHGT_ce9cc19 = [
 type heredoc_start = Token.t
 [@@deriving sexp_of]
 
-type empty_statement = [
-    `SEMI of Token.t (* ";" *)
-  | `Ellips of Token.t (* "..." *)
-]
-[@@deriving sexp_of]
-
 type xhp_category_declaration = (
     Token.t (* "category" *)
   * xhp_category_identifier (*tok*)
@@ -145,6 +142,39 @@ type xhp_category_declaration = (
       list (* zero or more *)
   * Token.t (* ";" *)
 )
+[@@deriving sexp_of]
+
+type empty_statement = [
+    `SEMI of Token.t (* ";" *)
+  | `Ellips of Token.t (* "..." *)
+]
+[@@deriving sexp_of]
+
+type semgrep_extended_identifier = [
+    `Semg_id of semgrep_identifier (*tok*)
+  | `Id of identifier (*tok*)
+]
+[@@deriving sexp_of]
+
+type qualified_identifier = [
+    `Choice_opt_id_rep1_back_id of [
+        `Opt_id_rep1_back_id of (
+            identifier (*tok*) option
+          * (Token.t (* "\\" *) * identifier (*tok*)) list (* one or more *)
+        )
+      | `Id of identifier (*tok*)
+    ]
+  | `Semg_id of semgrep_identifier (*tok*)
+]
+[@@deriving sexp_of]
+
+type prefixed_string = (identifier (*tok*) * string_ (*tok*))
+[@@deriving sexp_of]
+
+type anon_choice_str_d42aa42 = [
+    `Str of string_ (*tok*)
+  | `Int of integer (*tok*)
+]
 [@@deriving sexp_of]
 
 type trait_alias_clause = (
@@ -160,12 +190,15 @@ type trait_alias_clause = (
 )
 [@@deriving sexp_of]
 
-type qualified_identifier = [
-    `Opt_id_rep1_back_id of (
-        identifier (*tok*) option
-      * (Token.t (* "\\" *) * identifier (*tok*)) list (* one or more *)
-    )
-  | `Id of identifier (*tok*)
+type class_modifier = [
+    `Abst_modi of Token.t (* "abstract" *)
+  | `Final_modi of Token.t (* "final" *)
+]
+[@@deriving sexp_of]
+
+type xhp_identifier_ = [
+    `Xhp_id of xhp_identifier (*tok*)
+  | `Xhp_class_id of xhp_class_identifier (*tok*)
 ]
 [@@deriving sexp_of]
 
@@ -195,35 +228,6 @@ type xhp_attribute_expression = [
 ]
 [@@deriving sexp_of]
 
-type xhp_identifier_ = [
-    `Xhp_id of xhp_identifier (*tok*)
-  | `Xhp_class_id of xhp_class_identifier (*tok*)
-]
-[@@deriving sexp_of]
-
-type anon_choice_str_d42aa42 = [
-    `Str of string_ (*tok*)
-  | `Int of integer (*tok*)
-]
-[@@deriving sexp_of]
-
-type prefixed_string = (identifier (*tok*) * string_ (*tok*))
-[@@deriving sexp_of]
-
-type member_modifier = [
-    `Visi_modi of visibility_modifier
-  | `Static_modi of Token.t (* "static" *)
-  | `Abst_modi of Token.t (* "abstract" *)
-  | `Final_modi of Token.t (* "final" *)
-]
-[@@deriving sexp_of]
-
-type class_modifier = [
-    `Abst_modi of Token.t (* "abstract" *)
-  | `Final_modi of Token.t (* "final" *)
-]
-[@@deriving sexp_of]
-
 type primitive_type = [
     `Bool of Token.t (* "bool" *)
   | `Float of Token.t (* "float" *)
@@ -249,11 +253,25 @@ type literal = [
 ]
 [@@deriving sexp_of]
 
+type member_modifier = [
+    `Visi_modi of visibility_modifier
+  | `Static_modi of Token.t (* "static" *)
+  | `Abst_modi of Token.t (* "abstract" *)
+  | `Final_modi of Token.t (* "final" *)
+]
+[@@deriving sexp_of]
+
 type type_constant_ = (
     [ `Qual_id of qualified_identifier | `Type_cst_ of type_constant_ ]
   * Token.t (* "::" *)
   * identifier (*tok*)
 )
+[@@deriving sexp_of]
+
+type namespace_identifier = [
+    `Qual_id_opt_back of (qualified_identifier * Token.t (* "\\" *) option)
+  | `Back of Token.t (* "\\" *)
+]
 [@@deriving sexp_of]
 
 type trait_select_clause = (
@@ -266,23 +284,6 @@ type trait_select_clause = (
 )
 [@@deriving sexp_of]
 
-type namespace_identifier = [
-    `Qual_id_opt_back of (qualified_identifier * Token.t (* "\\" *) option)
-  | `Back of Token.t (* "\\" *)
-]
-[@@deriving sexp_of]
-
-type xhp_children_declaration = (
-    Token.t (* "children" *)
-  * xhp_attribute_expression
-  * (Token.t (* "," *) * xhp_attribute_expression) list (* zero or more *)
-  * Token.t (* ";" *)
-)
-[@@deriving sexp_of]
-
-type xhp_close = (Token.t (* "</" *) * xhp_identifier_ * Token.t (* ">" *))
-[@@deriving sexp_of]
-
 type xhp_enum_type = (
     Token.t (* "enum" *)
   * Token.t (* "{" *)
@@ -290,6 +291,17 @@ type xhp_enum_type = (
   * (Token.t (* "," *) * anon_choice_str_d42aa42) list (* zero or more *)
   * Token.t (* "," *) option
   * Token.t (* "}" *)
+)
+[@@deriving sexp_of]
+
+type xhp_close = (Token.t (* "</" *) * xhp_identifier_ * Token.t (* ">" *))
+[@@deriving sexp_of]
+
+type xhp_children_declaration = (
+    Token.t (* "children" *)
+  * xhp_attribute_expression
+  * (Token.t (* "," *) * xhp_attribute_expression) list (* zero or more *)
+  * Token.t (* ";" *)
 )
 [@@deriving sexp_of]
 
@@ -304,13 +316,6 @@ type keyword = [
   | `Choice_bool of primitive_type
   | `Choice_array of collection_type
 ]
-[@@deriving sexp_of]
-
-type use_clause = (
-    use_type option
-  * namespace_identifier
-  * (Token.t (* "as" *) * identifier (*tok*)) option
-)
 [@@deriving sexp_of]
 
 type anonymous_function_use_clause = (
@@ -336,8 +341,15 @@ type scoped_identifier = (
 )
 [@@deriving sexp_of]
 
-type anon_choice_id_0f53960 = [
-    `Id of identifier (*tok*)
+type use_clause = (
+    use_type option
+  * namespace_identifier
+  * (Token.t (* "as" *) * identifier (*tok*)) option
+)
+[@@deriving sexp_of]
+
+type anon_choice_semg_exte_id_8bbc8de = [
+    `Semg_exte_id of semgrep_extended_identifier
   | `Choice_type of keyword
 ]
 [@@deriving sexp_of]
@@ -507,7 +519,7 @@ and class_const_declaration = (
 )
 
 and class_const_declarator = (
-    anon_choice_id_0f53960
+    anon_choice_semg_exte_id_8bbc8de
   * (Token.t (* "=" *) * expression) option
 )
 
@@ -525,7 +537,7 @@ and compound_statement = (
 )
 
 and const_declarator = (
-    anon_choice_id_0f53960 * Token.t (* "=" *) * expression
+    anon_choice_semg_exte_id_8bbc8de * Token.t (* "=" *) * expression
 )
 
 and declaration = [
@@ -540,7 +552,10 @@ and declaration = [
       * class_modifier option
       * Token.t (* "xhp" *) option
       * Token.t (* "class" *)
-      * [ `Id of identifier (*tok*) | `Choice_xhp_id of xhp_identifier_ ]
+      * [
+            `Semg_exte_id of semgrep_extended_identifier
+          | `Choice_xhp_id of xhp_identifier_
+        ]
       * type_parameters option
       * extends_clause option
       * implements_clause option
@@ -550,7 +565,7 @@ and declaration = [
   | `Inte_decl of (
         attribute_modifier option
       * Token.t (* "interface" *)
-      * identifier (*tok*)
+      * semgrep_extended_identifier
       * type_parameters option
       * extends_clause option
       * where_clause option
@@ -559,7 +574,7 @@ and declaration = [
   | `Trait_decl of (
         attribute_modifier option
       * Token.t (* "trait" *)
-      * identifier (*tok*)
+      * semgrep_extended_identifier
       * type_parameters option
       * implements_clause option
       * where_clause option
@@ -568,7 +583,7 @@ and declaration = [
   | `Alias_decl of (
         attribute_modifier option
       * [ `Type of Token.t (* "type" *) | `Newt of Token.t (* "newtype" *) ]
-      * identifier (*tok*)
+      * semgrep_extended_identifier
       * type_parameters option
       * (Token.t (* "as" *) * type_) option
       * Token.t (* "=" *)
@@ -578,7 +593,7 @@ and declaration = [
   | `Enum_decl of (
         attribute_modifier option
       * Token.t (* "enum" *)
-      * identifier (*tok*)
+      * semgrep_extended_identifier
       * Token.t (* ":" *)
       * type_
       * (Token.t (* "as" *) * type_) option
@@ -626,7 +641,8 @@ and embedded_brace_expression_ = [
 ]
 
 and enumerator = (
-    identifier (*tok*) * Token.t (* "=" *) * expression * Token.t (* ";" *)
+    semgrep_extended_identifier * Token.t (* "=" *) * expression
+  * Token.t (* ";" *)
 )
 
 and expression = [
@@ -683,7 +699,7 @@ and finally_clause = (Token.t (* "finally" *) * compound_statement)
 and function_declaration_header = (
     Token.t (* "async" *) option
   * Token.t (* "function" *)
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * type_parameters option
   * parameters
   * (Token.t (* ":" *) * attribute_modifier option * type_) option
@@ -1134,7 +1150,7 @@ and type_const_declaration = (
   * member_modifier list (* zero or more *)
   * Token.t (* "const" *)
   * Token.t (* "type" *)
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * type_parameters option
   * (Token.t (* "as" *) * type_) option
   * (Token.t (* "=" *) * type_) option
@@ -1282,19 +1298,19 @@ type async_modifier (* inlined *) = Token.t (* "async" *)
 type final_modifier (* inlined *) = Token.t (* "final" *)
 [@@deriving sexp_of]
 
+type variadic_modifier (* inlined *) = Token.t (* "..." *)
+[@@deriving sexp_of]
+
 type ellipsis (* inlined *) = Token.t (* "..." *)
 [@@deriving sexp_of]
 
 type backslash (* inlined *) = Token.t (* "\\" *)
 [@@deriving sexp_of]
 
-type variadic_modifier (* inlined *) = Token.t (* "..." *)
-[@@deriving sexp_of]
-
 type inout_modifier (* inlined *) = Token.t (* "inout" *)
 [@@deriving sexp_of]
 
-type static_modifier (* inlined *) = Token.t (* "static" *)
+type xhp_modifier (* inlined *) = Token.t (* "xhp" *)
 [@@deriving sexp_of]
 
 type comment (* inlined *) = Token.t
@@ -1303,10 +1319,10 @@ type comment (* inlined *) = Token.t
 type abstract_modifier (* inlined *) = Token.t (* "abstract" *)
 [@@deriving sexp_of]
 
-type xhp_modifier (* inlined *) = Token.t (* "xhp" *)
+type await_modifier (* inlined *) = Token.t (* "await" *)
 [@@deriving sexp_of]
 
-type await_modifier (* inlined *) = Token.t (* "await" *)
+type static_modifier (* inlined *) = Token.t (* "static" *)
 [@@deriving sexp_of]
 
 type single_parameter (* inlined *) = variable (*tok*)
@@ -1369,7 +1385,7 @@ type use_statement (* inlined *) = (
 type alias_declaration (* inlined *) = (
     attribute_modifier option
   * [ `Type of Token.t (* "type" *) | `Newt of Token.t (* "newtype" *) ]
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * type_parameters option
   * (Token.t (* "as" *) * type_) option
   * Token.t (* "=" *)
@@ -1391,7 +1407,10 @@ type class_declaration (* inlined *) = (
   * class_modifier option
   * Token.t (* "xhp" *) option
   * Token.t (* "class" *)
-  * [ `Id of identifier (*tok*) | `Choice_xhp_id of xhp_identifier_ ]
+  * [
+        `Semg_exte_id of semgrep_extended_identifier
+      | `Choice_xhp_id of xhp_identifier_
+    ]
   * type_parameters option
   * extends_clause option
   * implements_clause option
@@ -1466,7 +1485,7 @@ type embedded_brace_subscript_expression (* inlined *) = (
 type enum_declaration (* inlined *) = (
     attribute_modifier option
   * Token.t (* "enum" *)
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * Token.t (* ":" *)
   * type_
   * (Token.t (* "as" *) * type_) option
@@ -1562,7 +1581,7 @@ type if_statement (* inlined *) = (
 type interface_declaration (* inlined *) = (
     attribute_modifier option
   * Token.t (* "interface" *)
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * type_parameters option
   * extends_clause option
   * where_clause option
@@ -1641,7 +1660,7 @@ type throw_statement (* inlined *) = (
 type trait_declaration (* inlined *) = (
     attribute_modifier option
   * Token.t (* "trait" *)
-  * identifier (*tok*)
+  * semgrep_extended_identifier
   * type_parameters option
   * implements_clause option
   * where_clause option
